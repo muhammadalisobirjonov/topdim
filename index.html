@@ -3,86 +3,113 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>MediaHub — rezyumesiz mediya ishlari</title>
-<meta name="description" content="Targetolog, SMM, montajyor, ssenarist: rezyumesiz ish va xodim toping. Telegram orqali to‘g‘ridan-to‘g‘ri yozing.">
-<meta name="theme-color" content="#2A5BFF">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232A5BFF'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='700' font-size='34' text-anchor='middle' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+<title>Topdim — ish va mutaxassislar</title>
+<meta name="description" content="Targetolog, SMM, montajyor, ssenarist: rezyumesiz ish va mutaxassis toping. Telegram orqali to‘g‘ridan-to‘g‘ri yozing.">
+<meta name="theme-color" content="#0B0C0F">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Comfortaa:wght@700&display=swap">
+<script>
+/* Tema sahifa chizilishidan oldin qo'yiladi, shunda oq "miltillash" bo'lmaydi */
+try{var t=localStorage.getItem("topdim-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}
+</script>
 <style>
-[hidden]{display:none!important}
-html,body{margin:0}
-:root{color-scheme:light}
-/* Layout: one narrow app column (like a phone screen), sticky tabs on top, one big action button pinned at the bottom. */
+/* Layout: one narrow app column. Home = one question with two big answers; list = filter chips + rows + one pinned action. */
 :root{
-  --bg:#F5F6FA; --card:#FFFFFF; --ink:#12141C; --muted:#687083; --line:#E3E6EE;
-  --accent:#2A5BFF; --accent-ink:#FFFFFF; --accent-soft:#E9EEFF; --danger:#C83A3A;
-  --scrim:rgba(18,20,28,.45);
+  /* soft light: grey, never pure white */
+  --bg:#E7E9ED; --card:#F2F3F5; --ink:#16181D; --muted:#5D6370; --line:#D3D7DE;
+  --accent:#0E8F5A; --accent-ink:#FFFFFF; --accent-soft:#D3EBDF; --danger:#C23B3B;
+  --scrim:rgba(22,24,29,.45);
   --font:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --r:16px;
+  --brand:"Comfortaa","Onest",system-ui,sans-serif;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0E1016; --card:#171A22; --ink:#EEF0F6; --muted:#9299AB; --line:#272B37;
-  --accent:#6188FF; --accent-ink:#0B0E18; --accent-soft:#1C2440; --danger:#FF7474;
-  --scrim:rgba(0,0,0,.6); color-scheme:dark}}
+  --bg:#0B0C0F; --card:#15171C; --ink:#F1F2F4; --muted:#9197A4; --line:#24272F;
+  --accent:#22C98B; --accent-ink:#06140D; --accent-soft:#11291F; --danger:#FF7373;
+  --scrim:rgba(0,0,0,.65); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E1016; --card:#171A22; --ink:#EEF0F6; --muted:#9299AB; --line:#272B37;
-  --accent:#6188FF; --accent-ink:#0B0E18; --accent-soft:#1C2440; --danger:#FF7474;
-  --scrim:rgba(0,0,0,.6); color-scheme:dark}
+  --bg:#0B0C0F; --card:#15171C; --ink:#F1F2F4; --muted:#9197A4; --line:#24272F;
+  --accent:#22C98B; --accent-ink:#06140D; --accent-soft:#11291F; --danger:#FF7373;
+  --scrim:rgba(0,0,0,.65); color-scheme:dark}
 
+[hidden]{display:none!important}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
 .in{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
-/* top */
+/* header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg)}
-.brand{display:flex;align-items:center;justify-content:space-between;padding-block:14px 10px}
-.logo{font-weight:700;font-size:20px;letter-spacing:-.02em}
-.logo b{color:var(--accent);font-weight:700}
-.badge{font-size:12px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:4px 10px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px}
-.tabs button{border:0;background:none;border-radius:10px;padding:10px 8px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
-.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
-.tabs .n{font-size:12px;font-weight:500;opacity:.8;font-variant-numeric:tabular-nums}
+.bar1{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:12px 10px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);border:0;background:none;padding:0}
+.logo svg{width:30px;height:30px}
+.logo span{font-family:var(--brand);font-weight:700;font-size:22px;letter-spacing:-.01em}
+.tools{display:flex;align-items:center;gap:6px}
+.lang{display:flex;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:3px}
+.lang button{border:0;background:none;border-radius:8px;padding:5px 8px;font-size:12px;font-weight:600;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.icon-btn{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;padding:0}
+.icon-btn svg{width:18px;height:18px}
+.bar2{display:flex;align-items:center;gap:10px;padding-bottom:10px}
+.back{display:flex;align-items:center;gap:4px;border:0;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px 12px 7px 8px;font-weight:600;font-size:14px}
+.back svg{width:18px;height:18px}
+.bar2 h1{margin:0;font-size:20px;letter-spacing:-.01em}
+.bar2 .n{color:var(--muted);font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
 
-/* main */
-main.in{padding-block:12px 120px}
-.lead{margin:2px 0 12px;color:var(--muted);font-size:14px}
+/* home */
+.home{padding-block:18px 32px;display:flex;flex-direction:column;gap:14px}
+.home h1{margin:6px 0 0;font-size:30px;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+.home .sub{margin:0 0 6px;color:var(--muted);font-size:16px}
+.pick{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px 18px;transition:border-color .15s,transform .15s}
+.pick:hover{border-color:var(--accent)}
+.pick:active{transform:scale(.99)}
+.pick .ic{width:52px;height:52px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.pick .ic svg{width:26px;height:26px}
+.pick b{display:block;font-size:19px;letter-spacing:-.01em}
+.pick small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.pick .cnt{display:block;color:var(--accent);font-size:13px;font-weight:600;margin-top:6px;font-variant-numeric:tabular-nums}
+.pick .arr{color:var(--muted)}
+.pick .arr svg{width:22px;height:22px}
+.steps{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.steps li{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.steps span{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-weight:600;color:var(--ink);font-size:13px}
+
+/* list */
+.listv{padding-block:4px 120px}
+.lead{margin:0 0 12px;color:var(--muted);font-size:14px}
+.demo{margin:0 0 12px;font-size:13px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:8px 12px}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:2px max(16px,env(safe-area-inset-left,0px)) 12px}
 .chips::-webkit-scrollbar{display:none}
 .chips.wrap{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
-.chip{position:relative;flex:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:14px;font-weight:500;white-space:nowrap}
+.chip{position:relative;flex:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:14px;font-weight:500;white-space:nowrap;cursor:pointer}
 .chip[aria-pressed="true"],.chip:has(input:checked){background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .chip input{position:absolute;opacity:0;pointer-events:none}
 .chip:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
-
-.list{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.list{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .list:empty{display:none}
 .item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
 .item:first-child{border-top:0}
 .body{min-width:0}
 .cat{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .t{font-weight:600;font-size:16px;margin-top:2px;overflow-wrap:anywhere}
-.d{color:var(--ink);opacity:.85;font-size:14px;margin-top:2px;overflow-wrap:anywhere}
+.d{font-size:14px;margin-top:2px;overflow-wrap:anywhere;opacity:.88}
 .m{color:var(--muted);font-size:13px;margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
 .mine{color:var(--accent);font-weight:600}
 .del{border:0;background:none;padding:0;color:var(--danger);font-size:13px;text-decoration:underline}
 .go{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:14px;text-decoration:none;border-radius:12px;padding:10px 14px;white-space:nowrap}
 .go:hover{background:var(--accent);color:var(--accent-ink)}
 .go svg{width:16px;height:16px}
-
-.empty{text-align:center;padding:36px 20px;background:var(--card);border:1px dashed var(--line);border-radius:var(--r);color:var(--muted)}
+.empty{text-align:center;padding:36px 20px;background:var(--card);border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
 .empty strong{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
-.empty button{margin-top:14px}
 
-/* bottom bar */
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;padding-top:12px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.cta{position:fixed;left:0;right:0;bottom:0;z-index:6;padding-top:12px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
 .primary{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:14px;padding:12px 18px}
 .big{width:100%;padding:15px 18px;font-size:16px}
 .primary:disabled{opacity:.5;cursor:default}
@@ -91,20 +118,20 @@ main.in{padding-block:12px 120px}
 .scrim{position:fixed;inset:0;background:var(--scrim);z-index:20}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:92vh;overflow:auto;background:var(--card);border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
 @keyframes up{from{transform:translateY(40px)}}
-@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}.pick{transition:none}}
 .sheet .in{display:flex;flex-direction:column;gap:14px}
 .grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:10px auto 0}
 .sh-head{display:flex;justify-content:space-between;align-items:center}
-.sh-head h2{margin:0;font-size:20px;letter-spacing:-.01em}
+.sh-head h2{margin:0;font-size:20px}
 .x{border:0;background:var(--bg);width:36px;height:36px;border-radius:50%;font-size:20px;line-height:1}
 form{display:flex;flex-direction:column;gap:14px}
 .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .seg label{position:relative}
 .seg input{position:absolute;opacity:0}
-.seg span{display:block;text-align:center;padding:12px;border:1px solid var(--line);border-radius:12px;font-weight:600}
+.seg span{display:block;text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:12px;font-weight:600}
 .seg input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 .seg input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
-fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+fieldset{border:0;margin:0;padding:0}
 legend,.f{font-size:13px;font-weight:500;color:var(--muted)}
 legend{padding:0;margin-bottom:8px}
 .f{display:flex;flex-direction:column;gap:6px}
@@ -113,7 +140,6 @@ legend{padding:0;margin-bottom:8px}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
 .err{margin:0;color:var(--danger);font-size:14px}
 .hint{margin:0;color:var(--muted);font-size:13px;text-align:center}
-
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:500;font-size:14px;max-width:calc(100% - 32px);text-align:center}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -126,175 +152,305 @@ window.FIREBASE_CONFIG = null;
 </script>
 </head>
 <body>
+
 <header class="top">
   <div class="in">
-    <div class="brand">
-      <span class="logo">Media<b>Hub</b></span>
-      <span class="badge">Rezyumesiz</span>
+    <div class="bar1">
+      <button class="logo" id="home-btn" type="button" aria-label="Topdim">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="27" cy="27" r="18" fill="none" stroke="currentColor" stroke-width="6"/><path d="M40.5 40.5 55 55" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M18.5 27.5l6 6L36 22" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>topdim</span>
+      </button>
+      <div class="tools">
+        <div class="lang" role="group" aria-label="Til / Язык / Language">
+          <button type="button" data-lang="uz">UZ</button>
+          <button type="button" data-lang="ru">RU</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <button class="icon-btn" id="theme" type="button"></button>
+      </div>
     </div>
-    <div class="tabs" role="tablist" aria-label="Bo‘limlar">
-      <button id="tab-v" role="tab" aria-selected="true" data-tab="v">Ishlar <span class="n" id="n-v"></span></button>
-      <button id="tab-s" role="tab" aria-selected="false" data-tab="s">Mutaxassislar <span class="n" id="n-s"></span></button>
+    <div class="bar2" id="bar2" hidden>
+      <button class="back" id="back" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span data-i="back"></span></button>
+      <h1 id="list-title"></h1><span class="n" id="list-n"></span>
     </div>
   </div>
 </header>
 
-<main class="in">
-  <p class="lead" id="lead"></p>
-  <div class="chips" id="chips" aria-label="Yo‘nalish bo‘yicha saralash"></div>
-  <ul class="list" id="list"></ul>
-  <div class="empty" id="empty" hidden>
-    <strong id="empty-t"></strong>
-    <span id="empty-d"></span><br>
-    <button class="primary" id="empty-add" type="button">+ E‘lon berish</button>
-  </div>
+<!-- HOME: one question -->
+<main class="in home" id="v-home">
+  <h1 data-i="q"></h1>
+  <p class="sub" data-i="qSub"></p>
+  <button class="pick" type="button" id="pick-job">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3 13h18"/></svg></span>
+    <span><b data-i="roleJob"></b><small data-i="roleJobSub"></small><span class="cnt" id="cnt-v"></span></span>
+    <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+  </button>
+  <button class="pick" type="button" id="pick-hire">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M3 20c.8-3.5 3.6-5.5 7-5.5 1.3 0 2.5.3 3.5.8"/><circle cx="18" cy="17" r="3"/><path d="M20.2 19.2 22 21"/></svg></span>
+    <span><b data-i="roleHire"></b><small data-i="roleHireSub"></small><span class="cnt" id="cnt-s"></span></span>
+    <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+  </button>
+  <ol class="steps" id="steps"></ol>
 </main>
 
-<div class="bar"><div class="in"><button class="primary big" id="add" type="button">+ E‘lon berish</button></div></div>
+<!-- LIST -->
+<main class="in listv" id="v-list" hidden>
+  <p class="lead" id="lead"></p>
+  <p class="demo" id="demo" hidden data-i="demoNote"></p>
+  <div class="chips" id="chips"></div>
+  <ul class="list" id="list"></ul>
+  <div class="empty" id="empty" hidden><strong id="empty-t"></strong><span id="empty-d"></span></div>
+</main>
+<div class="cta" id="cta" hidden><div class="in"><button class="primary big" id="add" type="button"></button></div></div>
 
 <div class="scrim" id="scrim" hidden></div>
 <section class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sh-t">
   <div class="grab"></div>
   <div class="in">
-    <div class="sh-head">
-      <h2 id="sh-t">E‘lon berish</h2>
-      <button class="x" id="close" type="button" aria-label="Yopish">×</button>
-    </div>
+    <div class="sh-head"><h2 id="sh-t" data-i="formTitle"></h2><button class="x" id="close" type="button">×</button></div>
     <form id="form" novalidate>
-      <div class="seg" role="radiogroup" aria-label="Kim siz?">
-        <label><input type="radio" name="kind" value="s" id="k-s" checked><span>Ish izlayman</span></label>
-        <label><input type="radio" name="kind" value="v" id="k-v"><span>Xodim izlayman</span></label>
+      <div class="seg" role="radiogroup">
+        <label><input type="radio" name="kind" value="s" id="k-s" checked><span data-i="kindS"></span></label>
+        <label><input type="radio" name="kind" value="v" id="k-v"><span data-i="kindV"></span></label>
       </div>
-      <fieldset>
-        <legend>Yo‘nalish</legend>
-        <div class="chips wrap" id="f-cats"></div>
-      </fieldset>
-      <label class="f" id="w-name">Ismingiz<input id="f-name" maxlength="40" autocomplete="given-name" placeholder="Masalan: Aziz"></label>
-      <label class="f"><span id="l-text">Nima qila olasiz? (bir gap)</span><input id="f-text" maxlength="120" placeholder="Masalan: Reels montaj qilaman, 2 yil tajriba"></label>
+      <fieldset><legend data-i="fCat"></legend><div class="chips wrap" id="f-cats"></div></fieldset>
+      <label class="f" id="w-name"><span data-i="fName"></span><input id="f-name" maxlength="40" autocomplete="given-name"></label>
+      <label class="f"><span id="l-text"></span><input id="f-text" maxlength="120"></label>
       <div class="two">
-        <label class="f">Shahar<input id="f-city" maxlength="30" value="Toshkent"></label>
-        <label class="f" id="w-pay">Maosh (ixtiyoriy)<input id="f-pay" maxlength="30" placeholder="Kelishiladi"></label>
+        <label class="f"><span data-i="fCity"></span><input id="f-city" maxlength="30"></label>
+        <label class="f" id="w-pay"><span data-i="fPay"></span><input id="f-pay" maxlength="30"></label>
       </div>
-      <label class="f">Telegram<input id="f-tg" maxlength="45" placeholder="@username" autocapitalize="off" autocomplete="off" spellcheck="false"></label>
+      <label class="f"><span>Telegram</span><input id="f-tg" maxlength="45" placeholder="@username" autocapitalize="off" autocomplete="off" spellcheck="false"></label>
       <p class="err" id="err" hidden></p>
-      <button class="primary big" type="submit" id="submit">Joylash</button>
-      <p class="hint">Rezyume kerak emas. Sizga Telegram orqali yozishadi.<br>Har kimda bittadan e‘lon: qayta yuborsangiz yangilanadi.</p>
+      <button class="primary big" type="submit" id="submit"></button>
+      <p class="hint" data-i="hint"></p>
     </form>
   </div>
 </section>
-
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
 (function(){
-const CATS=[["target","Targetolog"],["smm","SMM menejer"],["montaj","Montajyor"],["ssenariy","Ssenarist"],["dizayn","Dizayner"],["video","Videograf"],["kopirayt","Kopirayter"],["boshqa","Boshqa"]];
-const CAT=Object.fromEntries(CATS);
+/* ---------- texts ---------- */
+const T={
+uz:{q:"Nima qidiryapsiz?",qSub:"Rezyume shart emas. Tanlang va Telegramda yozing.",
+ roleJob:"Ish izlayapman",roleJobSub:"Men mutaxassisman, menga ish kerak",
+ roleHire:"Mutaxassis kerak",roleHireSub:"Xodim yoki frilanser qidiryapman",
+ nV:n=>n+" ta vakansiya",nS:n=>n+" ta mutaxassis",steps:["Tanlang","Toping","Telegramda yozing"],
+ back:"Orqaga",jobs:"Ishlar",specs:"Mutaxassislar",
+ jobsLead:"Ish beruvchilar e’lonlari. Yoqqaniga Telegramda yozing.",specsLead:"Ish izlayotganlar. Rezyume yo‘q, to‘g‘ridan-to‘g‘ri yozasiz.",
+ all:"Hammasi",write:"Yozish",ctaJobs:"+ O‘zim haqimda e’lon berish",ctaSpecs:"+ Vakansiya joylash",
+ emptyJobsT:"Hali vakansiya yo‘q",emptyJobsD:"O‘zingiz haqingizda e’lon qoldiring, ish beruvchilar sizni topadi.",
+ emptySpecsT:"Hali mutaxassis yo‘q",emptySpecsD:"Vakansiya joylang, mutaxassislar sizga Telegramda yozadi.",
+ emptyCat:"Bu yo‘nalishda hali e’lon yo‘q",loading:"Yuklanmoqda…",mine:"Sizniki",del:"O‘chirish",
+ demoNote:"Demo rejim: e’lonlar hozircha faqat sizga ko‘rinadi.",
+ formTitle:"E’lon berish",kindS:"Ish izlayapman",kindV:"Xodim kerak",fCat:"Yo‘nalish",fName:"Ismingiz",fNamePh:"Masalan: Aziz",
+ fTextS:"Nima qila olasiz? (bir gap)",fTextSPh:"Masalan: Reels montaj qilaman, 2 yil tajriba",
+ fTextV:"Kim kerak, qisqacha (bir gap)",fTextVPh:"Masalan: onlayn do‘kon uchun Instagram reklama",
+ fCity:"Shahar",city:"Toshkent",fPay:"Maosh (ixtiyoriy)",pay:"Kelishiladi",submit:"Joylash",submitting:"Joylanmoqda…",
+ hint:"Rezyume kerak emas. Sizga Telegram orqali yozishadi. Har kimda bittadan e’lon: qayta yuborsangiz yangilanadi.",
+ errName:"Ismingizni yozing.",errTextS:"Nima qila olishingizni bir gapda yozing.",errTextV:"Kim kerakligini bir gapda yozing.",
+ errCity:"Shaharni yozing.",errTg:"Telegram username noto‘g‘ri. Masalan: @aziz_montaj",
+ errPerm:"E’lon joylab bo‘lmadi: ruxsat yo‘q. Sahifani yangilab, qayta urinib ko‘ring.",errSave:"Saqlab bo‘lmadi. Internetni tekshirib, qayta urinib ko‘ring.",
+ ok:"E’lon joylandi",okDemo:"Demo rejim: e’lon faqat sizga ko‘rinadi",deleted:"E’lon o‘chirildi",delErr:"O‘chirib bo‘lmadi, qayta urinib ko‘ring",
+ toDark:"Qorong‘i temaga o‘tish",toLight:"Yorug‘ temaga o‘tish",close:"Yopish",
+ need:c=>c+" kerak",needAny:"Xodim kerak",ago:d=>d<=0?"bugun":d===1?"kecha":d<30?d+" kun oldin":Math.floor(d/30)+" oy oldin",
+ cats:{target:"Targetolog",smm:"SMM menejer",montaj:"Montajyor",ssenariy:"Ssenarist",dizayn:"Dizayner",video:"Videograf",kopirayt:"Kopirayter",boshqa:"Boshqa"}},
+ru:{q:"Что вы ищете?",qSub:"Резюме не нужно. Выберите и напишите в Telegram.",
+ roleJob:"Ищу работу",roleJobSub:"Я специалист, мне нужна работа",
+ roleHire:"Нужен специалист",roleHireSub:"Ищу сотрудника или фрилансера",
+ nV:n=>"Вакансий: "+n,nS:n=>"Специалистов: "+n,steps:["Выберите","Найдите","Напишите в Telegram"],
+ back:"Назад",jobs:"Работа",specs:"Специалисты",
+ jobsLead:"Объявления работодателей. Понравилось — напишите в Telegram.",specsLead:"Ищут работу. Без резюме, пишите напрямую.",
+ all:"Все",write:"Написать",ctaJobs:"+ Объявление о себе",ctaSpecs:"+ Разместить вакансию",
+ emptyJobsT:"Пока нет вакансий",emptyJobsD:"Оставьте объявление о себе, и работодатели вас найдут.",
+ emptySpecsT:"Пока нет специалистов",emptySpecsD:"Разместите вакансию, и специалисты напишут вам в Telegram.",
+ emptyCat:"В этом направлении пока нет объявлений",loading:"Загрузка…",mine:"Ваше",del:"Удалить",
+ demoNote:"Демо-режим: объявления пока видны только вам.",
+ formTitle:"Новое объявление",kindS:"Ищу работу",kindV:"Нужен сотрудник",fCat:"Направление",fName:"Ваше имя",fNamePh:"Например: Азиз",
+ fTextS:"Что вы умеете? (одно предложение)",fTextSPh:"Например: монтирую Reels, опыт 2 года",
+ fTextV:"Кто нужен? (одно предложение)",fTextVPh:"Например: реклама в Instagram для интернет-магазина",
+ fCity:"Город",city:"Ташкент",fPay:"Зарплата (необязательно)",pay:"Договорная",submit:"Опубликовать",submitting:"Публикуем…",
+ hint:"Резюме не нужно. Вам напишут в Telegram. У каждого одно объявление: при повторной отправке оно обновится.",
+ errName:"Укажите имя.",errTextS:"Напишите одним предложением, что вы умеете.",errTextV:"Напишите одним предложением, кто нужен.",
+ errCity:"Укажите город.",errTg:"Неверный username Telegram. Например: @aziz_montaj",
+ errPerm:"Не удалось опубликовать: нет доступа. Обновите страницу и попробуйте снова.",errSave:"Не удалось сохранить. Проверьте интернет и попробуйте снова.",
+ ok:"Объявление опубликовано",okDemo:"Демо-режим: объявление видно только вам",deleted:"Объявление удалено",delErr:"Не удалось удалить, попробуйте снова",
+ toDark:"Включить тёмную тему",toLight:"Включить светлую тему",close:"Закрыть",
+ need:c=>"Нужен "+c.toLowerCase(),needAny:"Нужен сотрудник",ago:d=>d<=0?"сегодня":d===1?"вчера":d<30?d+" дн. назад":Math.floor(d/30)+" мес. назад",
+ cats:{target:"Таргетолог",smm:"SMM-менеджер",montaj:"Монтажёр",ssenariy:"Сценарист",dizayn:"Дизайнер",video:"Видеограф",kopirayt:"Копирайтер",boshqa:"Другое"}},
+en:{q:"What are you looking for?",qSub:"No résumé needed. Pick one and message on Telegram.",
+ roleJob:"I need a job",roleJobSub:"I’m a specialist looking for work",
+ roleHire:"I need a specialist",roleHireSub:"Hiring staff or a freelancer",
+ nV:n=>n+(n===1?" job":" jobs"),nS:n=>n+(n===1?" specialist":" specialists"),steps:["Pick","Find","Message on Telegram"],
+ back:"Back",jobs:"Jobs",specs:"Specialists",
+ jobsLead:"Posts from employers. Like one? Message them on Telegram.",specsLead:"People looking for work. No résumés, just message them.",
+ all:"All",write:"Message",ctaJobs:"+ Post about me",ctaSpecs:"+ Post a job",
+ emptyJobsT:"No jobs yet",emptyJobsD:"Post about yourself so employers can find you.",
+ emptySpecsT:"No specialists yet",emptySpecsD:"Post a job and specialists will message you on Telegram.",
+ emptyCat:"No posts in this category yet",loading:"Loading…",mine:"Yours",del:"Delete",
+ demoNote:"Demo mode: posts are only visible to you for now.",
+ formTitle:"New post",kindS:"I need a job",kindV:"I’m hiring",fCat:"Category",fName:"Your name",fNamePh:"e.g. Aziz",
+ fTextS:"What can you do? (one sentence)",fTextSPh:"e.g. I edit Reels, 2 years of experience",
+ fTextV:"Who do you need? (one sentence)",fTextVPh:"e.g. Instagram ads for an online store",
+ fCity:"City",city:"Tashkent",fPay:"Pay (optional)",pay:"Negotiable",submit:"Post",submitting:"Posting…",
+ hint:"No résumé needed. People will message you on Telegram. One post per person: sending again updates it.",
+ errName:"Enter your name.",errTextS:"Say in one sentence what you can do.",errTextV:"Say in one sentence who you need.",
+ errCity:"Enter a city.",errTg:"That Telegram username isn’t valid. Example: @aziz_montaj",
+ errPerm:"Couldn’t post: access denied. Reload the page and try again.",errSave:"Couldn’t save. Check your connection and try again.",
+ ok:"Posted",okDemo:"Demo mode: only you can see this post",deleted:"Post deleted",delErr:"Couldn’t delete, try again",
+ toDark:"Switch to dark theme",toLight:"Switch to light theme",close:"Close",
+ need:c=>c+" needed",needAny:"Hiring",ago:d=>d<=0?"today":d===1?"yesterday":d<30?d+"d ago":Math.floor(d/30)+"mo ago",
+ cats:{target:"Ads specialist",smm:"SMM manager",montaj:"Video editor",ssenariy:"Scriptwriter",dizayn:"Designer",video:"Videographer",kopirayt:"Copywriter",boshqa:"Other"}}
+};
+const CAT_KEYS=["target","smm","montaj","ssenariy","dizayn","video","kopirayt","boshqa"];
 const COLL={v:"vacancies",s:"profiles"};
 const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 const data={v:[],s:[]};
-let tab="v",filter="",db=null,uid=null,loaded=false,localMode=false;
+let lang="uz",view="home",tab="v",filter="",db=null,uid=null,loaded=false,localMode=false;
+const L=()=>T[lang];
 
-const TG_ICON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 18.3 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.2 12.9 1.6 11.5c-1-.3-1-1 .2-1.5L20.2 3c.8-.3 1.6.2 1.2 1.3Z"/></svg>';
-
+/* ---------- helpers ---------- */
 function cleanTg(v){
   let s=String(v||"").trim().replace(/^https?:\/\/(www\.)?(t|telegram)\.me\//i,"").replace(/^@/,"").replace(/\/.*$/,"");
   return /^[A-Za-z0-9_]{4,32}$/.test(s)?s:"";
 }
-function str(v,n){return String(v==null?"":v).slice(0,n)}
+const str=(v,n)=>String(v==null?"":v).slice(0,n);
 function norm(id,x){
   if(!x||typeof x!=="object")return null;
-  const tg=cleanTg(x.tg); if(!tg)return null;
-  return {id,cat:CAT[x.cat]?x.cat:"boshqa",name:str(x.name,40),text:str(x.text,120),city:str(x.city,30),pay:str(x.pay,30),tg,ts:Number(x.ts)||0};
+  const tg=cleanTg(x.tg);if(!tg)return null;
+  return {id,cat:CAT_KEYS.includes(x.cat)?x.cat:"boshqa",name:str(x.name,40),text:str(x.text,120),city:str(x.city,30),pay:str(x.pay,30),tg,ts:Number(x.ts)||0};
 }
-function ago(ts){
-  if(!ts)return "";
-  const d=Math.floor((Date.now()-ts)/864e5);
-  return d<=0?"bugun":d===1?"kecha":d<30?d+" kun oldin":Math.floor(d/30)+" oy oldin";
-}
-function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
+const isMine=x=>x.local||(uid&&x.id===uid);
+const TG_ICON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 18.3 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.2 12.9 1.6 11.5c-1-.3-1-1 .2-1.5L20.2 3c.8-.3 1.6.2 1.2 1.3Z"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>';
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+
+/* ---------- theme ---------- */
+function isDark(){
+  const a=document.documentElement.getAttribute("data-theme");
+  if(a)return a==="dark";
+  return matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function paintTheme(){
+  const d=isDark();const b=$("theme");
+  b.innerHTML=d?SUN:MOON;b.setAttribute("aria-label",d?L().toLight:L().toDark);b.title=b.getAttribute("aria-label");
+  document.querySelector('meta[name="theme-color"]').setAttribute("content",d?"#0B0C0F":"#E7E9ED");
+}
+$("theme").onclick=()=>{const n=isDark()?"light":"dark";document.documentElement.setAttribute("data-theme",n);store.set("topdim-theme",n);paintTheme()};
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",paintTheme);
+
+/* ---------- language ---------- */
+function pickLang(){
+  const s=store.get("topdim-lang");if(T[s])return s;
+  const n=(navigator.language||"").slice(0,2).toLowerCase();
+  return n==="ru"?"ru":n==="en"?"en":"uz";
+}
+function setLang(l){
+  lang=l;store.set("topdim-lang",l);document.documentElement.lang=l;
+  document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===l)));
+  document.querySelectorAll("[data-i]").forEach(e=>{e.textContent=L()[e.dataset.i]});
+  const st=$("steps");st.textContent="";L().steps.forEach((s,i)=>{const li=el("li");li.append(el("span",null,String(i+1)),document.createTextNode(s));st.appendChild(li)});
+  $("close").setAttribute("aria-label",L().close);
+  $("f-name").placeholder=L().fNamePh;$("f-pay").placeholder=L().pay;
+  buildFormCats();syncKind();paintTheme();renderAll();
+}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
 
 /* ---------- render ---------- */
 function renderChips(){
   const box=$("chips");box.textContent="";
-  [["","Hammasi"]].concat(CATS).forEach(([k,l])=>{
-    const b=el("button","chip",l);b.type="button";b.setAttribute("aria-pressed",String(filter===k));
+  [""].concat(CAT_KEYS).forEach(k=>{
+    const b=el("button","chip",k?L().cats[k]:L().all);b.type="button";b.setAttribute("aria-pressed",String(filter===k));
     b.onclick=()=>{filter=k;renderChips();renderList()};box.appendChild(b);
   });
 }
 function renderList(){
-  $("n-v").textContent=data.v.length||"";$("n-s").textContent=data.s.length||"";
-  $("tab-v").setAttribute("aria-selected",String(tab==="v"));$("tab-s").setAttribute("aria-selected",String(tab==="s"));
-  $("lead").textContent=tab==="v"?"Ish beruvchilar e‘lonlari. Yoqqaniga Telegramda yozing.":"Ish izlayotganlar. Rezyume yo‘q, to‘g‘ridan-to‘g‘ri yozasiz.";
+  $("cnt-v").textContent=loaded?L().nV(data.v.length):"";
+  $("cnt-s").textContent=loaded?L().nS(data.s.length):"";
+  if(view!=="list")return;
+  $("list-title").textContent=tab==="v"?L().jobs:L().specs;
+  $("list-n").textContent=loaded?String(data[tab].length):"";
+  $("lead").textContent=tab==="v"?L().jobsLead:L().specsLead;
+  $("add").textContent=tab==="v"?L().ctaJobs:L().ctaSpecs;
+  $("demo").hidden=!localMode;
   const list=$("list");list.textContent="";
   const rows=data[tab].filter(x=>!filter||x.cat===filter);
   rows.forEach(x=>{
-    const li=el("li","item"),body=el("div","body");
-    body.appendChild(el("div","cat",CAT[x.cat]));
-    if(tab==="v"){
-      body.appendChild(el("div","t",x.cat==="boshqa"?"Xodim kerak":CAT[x.cat]+" kerak"));
-    }else{
-      body.appendChild(el("div","t",x.name||"Mutaxassis"));
-    }
+    const li=el("li","item"),body=el("div","body"),cn=L().cats[x.cat];
+    body.appendChild(el("div","cat",cn));
+    body.appendChild(el("div","t",tab==="v"?(x.cat==="boshqa"?L().needAny:L().need(cn)):(x.name||"—")));
     if(x.text)body.appendChild(el("div","d",x.text));
     const m=el("div","m");
-    [x.city,tab==="v"?(x.pay||"Kelishiladi"):"",ago(x.ts)].filter(Boolean).forEach(s=>m.appendChild(el("span",null,s)));
-    if(uid&&x.id===uid||x.local){
-      m.appendChild(el("span","mine","Sizniki"));
-      const d=el("button","del","O‘chirish");d.type="button";d.onclick=()=>removeMine(tab);m.appendChild(d);
+    const d=x.ts?Math.floor((Date.now()-x.ts)/864e5):null;
+    [x.city,tab==="v"?(x.pay||L().pay):"",d==null?"":L().ago(d)].filter(Boolean).forEach(s=>m.appendChild(el("span",null,s)));
+    if(isMine(x)){
+      m.appendChild(el("span","mine",L().mine));
+      const b=el("button","del",L().del);b.type="button";b.onclick=()=>removeMine(tab);m.appendChild(b);
     }
     body.appendChild(m);
     const a=el("a","go");a.href="https://t.me/"+x.tg;a.target="_blank";a.rel="noopener";
-    a.innerHTML=TG_ICON;a.appendChild(document.createTextNode("Yozish"));
-    a.setAttribute("aria-label","Telegramda yozish: @"+x.tg);
+    a.innerHTML=TG_ICON;a.appendChild(document.createTextNode(L().write));a.setAttribute("aria-label",L().write+": @"+x.tg);
     li.append(body,a);list.appendChild(li);
   });
-  const empty=$("empty");
-  empty.hidden=rows.length>0;
+  const empty=$("empty");empty.hidden=rows.length>0;
   if(!rows.length){
-    if(!loaded){$("empty-t").textContent="Yuklanmoqda…";$("empty-d").textContent="";$("empty-add").hidden=true;return}
-    $("empty-add").hidden=false;
-    $("empty-t").textContent=filter?"Bu yo‘nalishda hali e‘lon yo‘q":(tab==="v"?"Hali vakansiya yo‘q":"Hali mutaxassis yo‘q");
-    $("empty-d").textContent=tab==="v"?"Xodim kerakmi? Bir daqiqada e‘lon bering.":"Ish izlayapsizmi? Ism, yo‘nalish va Telegram yetarli.";
+    if(!loaded){$("empty-t").textContent=L().loading;$("empty-d").textContent="";return}
+    $("empty-t").textContent=filter?L().emptyCat:(tab==="v"?L().emptyJobsT:L().emptySpecsT);
+    $("empty-d").textContent=tab==="v"?L().emptyJobsD:L().emptySpecsD;
   }
 }
+function renderAll(){renderChips();renderList()}
 
-/* ---------- routing ---------- */
-function route(){tab=location.hash==="#mutaxassislar"?"s":"v";renderList()}
-$("tab-v").onclick=()=>{location.hash="ishlar"};
-$("tab-s").onclick=()=>{location.hash="mutaxassislar"};
-addEventListener("hashchange",route);
+/* ---------- routing: #ishlar / #mutaxassislar / home ---------- */
+function route(){
+  const h=location.hash;
+  view=(h==="#ishlar"||h==="#mutaxassislar")?"list":"home";
+  if(view==="list")tab=h==="#ishlar"?"v":"s";
+  $("v-home").hidden=view!=="home";$("v-list").hidden=view!=="list";$("bar2").hidden=view!=="list";$("cta").hidden=view!=="list";
+  filter="";renderAll();scrollTo(0,0);
+}
+$("pick-job").onclick=()=>{location.hash="ishlar"};
+$("pick-hire").onclick=()=>{location.hash="mutaxassislar"};
+const goHome=()=>{history.pushState("",document.title,location.pathname+location.search);route()};
+$("back").onclick=goHome;$("home-btn").onclick=goHome;
+addEventListener("hashchange",route);addEventListener("popstate",route);
 
 /* ---------- form ---------- */
-const fc=$("f-cats");
-CATS.forEach(([k,l],i)=>{
-  const lab=el("label","chip");const r=document.createElement("input");
-  r.type="radio";r.name="cat";r.value=k;r.id="fc-"+k;if(i===0)r.checked=true;
-  lab.append(r,document.createTextNode(l));fc.appendChild(lab);
-});
-function kind(){return $("k-v").checked?"v":"s"}
+function buildFormCats(){
+  const fc=$("f-cats");const cur=(document.querySelector('input[name="cat"]:checked')||{}).value||"target";fc.textContent="";
+  CAT_KEYS.forEach(k=>{
+    const lab=el("label","chip");const r=document.createElement("input");
+    r.type="radio";r.name="cat";r.value=k;r.id="fc-"+k;r.checked=k===cur;
+    lab.append(r,document.createTextNode(L().cats[k]));fc.appendChild(lab);
+  });
+}
+const kind=()=>$("k-v").checked?"v":"s";
 function syncKind(){
   const v=kind()==="v";
   $("w-name").hidden=v;$("w-pay").hidden=!v;
-  $("l-text").textContent=v?"Kim kerak, qisqacha (bir gap)":"Nima qila olasiz? (bir gap)";
-  $("f-text").placeholder=v?"Masalan: onlayn do‘kon uchun Instagram reklama":"Masalan: Reels montaj qilaman, 2 yil tajriba";
+  $("l-text").textContent=v?L().fTextV:L().fTextS;$("f-text").placeholder=v?L().fTextVPh:L().fTextSPh;
+  $("submit").textContent=L().submit;
 }
 $("k-s").onchange=$("k-v").onchange=()=>{syncKind();prefill()};
 function prefill(){
-  const k=kind();const mine=data[k].find(x=>(uid&&x.id===uid)||x.local);
-  if(!mine)return;
+  const mine=data[kind()].find(isMine);
+  if(!mine){if(!$("f-city").value)$("f-city").value=L().city;return}
   const r=$("fc-"+mine.cat);if(r)r.checked=true;
   if(mine.name)$("f-name").value=mine.name;
   $("f-text").value=mine.text;$("f-city").value=mine.city;$("f-pay").value=mine.pay;$("f-tg").value="@"+mine.tg;
 }
+/* "Ishlar" ro'yxatidagi odam o'zi haqida (s), "Mutaxassislar"dagi odam vakansiya (v) joylaydi */
 function openSheet(){
-  $("k-"+tab).checked=true;syncKind();prefill();$("err").hidden=true;
+  $(tab==="v"?"k-s":"k-v").checked=true;syncKind();prefill();$("err").hidden=true;
   $("scrim").hidden=false;$("sheet").hidden=false;
-  setTimeout(()=>{const n=kind()==="s"&&!$("f-name").value?$("f-name"):$("f-text");n.focus()},60);
+  setTimeout(()=>{(kind()==="s"&&!$("f-name").value?$("f-name"):$("f-text")).focus()},60);
 }
 function closeSheet(){$("scrim").hidden=true;$("sheet").hidden=true;$("add").focus()}
-$("add").onclick=openSheet;$("empty-add").onclick=openSheet;
-$("close").onclick=closeSheet;$("scrim").onclick=closeSheet;
+$("add").onclick=openSheet;$("close").onclick=closeSheet;$("scrim").onclick=closeSheet;
 addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("sheet").hidden)closeSheet()});
 
 function fail(msg,input){const e=$("err");e.textContent=msg;e.hidden=false;if(input)input.focus()}
@@ -303,60 +459,52 @@ $("form").addEventListener("submit",async e=>{
   const k=kind();
   const rec={cat:(document.querySelector('input[name="cat"]:checked')||{}).value||"boshqa",
     text:$("f-text").value.trim(),city:$("f-city").value.trim(),tg:cleanTg($("f-tg").value),ts:Date.now()};
-  if(k==="s"){rec.name=$("f-name").value.trim();if(!rec.name)return fail("Ismingizni yozing.",$("f-name"))}
+  if(k==="s"){rec.name=$("f-name").value.trim();if(!rec.name)return fail(L().errName,$("f-name"))}
   else rec.pay=$("f-pay").value.trim();
-  if(!rec.text)return fail(k==="v"?"Kim kerakligini bir gapda yozing.":"Nima qila olishingizni bir gapda yozing.",$("f-text"));
-  if(!rec.city)return fail("Shaharni yozing.",$("f-city"));
-  if(!rec.tg)return fail("Telegram username noto‘g‘ri. Masalan: @aziz_montaj",$("f-tg"));
-  const btn=$("submit");btn.disabled=true;btn.textContent="Joylanmoqda…";
+  if(!rec.text)return fail(k==="v"?L().errTextV:L().errTextS,$("f-text"));
+  if(!rec.city)return fail(L().errCity,$("f-city"));
+  if(!rec.tg)return fail(L().errTg,$("f-tg"));
+  const btn=$("submit");btn.disabled=true;btn.textContent=L().submitting;
   try{
     if(db&&uid){await db.collection(COLL[k]).doc(uid).set(rec)}
-    else{
-      data[k]=data[k].filter(x=>!x.local);
-      data[k].unshift(Object.assign(norm("local-"+k,rec),{local:true}));
-    }
+    else{data[k]=data[k].filter(x=>!x.local);data[k].unshift(Object.assign(norm("local-"+k,rec),{local:true}))}
     closeSheet();
-    if(location.hash!==(k==="v"?"#ishlar":"#mutaxassislar"))location.hash=k==="v"?"ishlar":"mutaxassislar";
-    filter="";renderChips();renderList();
-    toast(localMode?"Demo rejim: e‘lon faqat sizga ko‘rinadi":"E‘lon joylandi");
+    /* e'lon ko'rinadigan ro'yxatga o'tamiz: vakansiya "Ishlar"da, profil "Mutaxassislar"da */
+    const target=k==="v"?"#ishlar":"#mutaxassislar";
+    if(location.hash!==target)location.hash=target.slice(1);else renderAll();
+    toast(localMode?L().okDemo:L().ok);
   }catch(err){
-    fail(err&&(err.code==="permission-denied"||err.code==="not_granted")
-      ?"Sizda e‘lon joylash huquqi yo‘q. Sahifa egasidan ruxsat so‘rang."
-      :"Saqlab bo‘lmadi. Internetni tekshirib, qayta urinib ko‘ring.");
-  }finally{btn.disabled=false;btn.textContent="Joylash"}
+    fail(err&&err.code==="permission-denied"?L().errPerm:L().errSave);
+  }finally{btn.disabled=false;btn.textContent=L().submit}
 });
-
 async function removeMine(k){
   try{
     if(db&&uid)await db.collection(COLL[k]).doc(uid).delete();
-    else{data[k]=data[k].filter(x=>!x.local);renderList()}
-    toast("E‘lon o‘chirildi");
-  }catch(e){toast("O‘chirib bo‘lmadi, qayta urinib ko‘ring")}
+    else{data[k]=data[k].filter(x=>!x.local);renderAll()}
+    toast(L().deleted);
+  }catch(e){toast(L().delErr)}
 }
 
 /* ---------- data ---------- */
-function goLocal(){
-  if(db)return;localMode=true;loaded=true;renderList();
-}
+function goLocal(){db=null;localMode=true;loaded=true;clearTimeout(timer);renderAll()}
 function subscribe(k){
   db.collection(COLL[k]).onSnapshot(snap=>{
-    data[k]=(snap.docs||[]).map(d=>norm(d.id,d.data())).filter(Boolean).sort((a,b)=>b.ts-a.ts);
-    loaded=true;clearTimeout(timer);renderList();
-  },()=>{loaded=true;renderList()});
+    data[k]=snap.docs.map(d=>norm(d.id,d.data())).filter(Boolean).sort((a,b)=>b.ts-a.ts);
+    loaded=true;clearTimeout(timer);renderAll();
+  },err=>{console.error(err);loaded=true;renderAll()});
 }
-const timer=setTimeout(()=>{loaded=true;renderList()},10000);
+const timer=setTimeout(()=>{loaded=true;renderAll()},10000);
 
-renderChips();route();
+setLang(pickLang());route();
 (async()=>{
   try{
     const cfg=window.FIREBASE_CONFIG;
     if(!cfg||!window.firebase){goLocal();return}
     firebase.initializeApp(cfg);
     const cred=await firebase.auth().signInAnonymously();
-    uid=cred.user.uid;
-    db=firebase.firestore();
+    uid=cred.user.uid;db=firebase.firestore();
     subscribe("v");subscribe("s");
-  }catch(e){console.error(e);db=null;goLocal()}
+  }catch(e){console.error(e);goLocal()}
 })();
 })();
 </script>

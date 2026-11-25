@@ -1,11 +1,11 @@
 {
-  "name": "MediaHub",
-  "short_name": "MediaHub",
-  "description": "Rezyumesiz mediya ish va xodim e'lonlari",
+  "name": "Topdim — ish va mutaxassislar",
+  "short_name": "Topdim",
+  "description": "Rezyumesiz mediya ish va mutaxassis e'lonlari",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#F5F6FA",
-  "theme_color": "#2A5BFF",
+  "background_color": "#0B0C0F",
+  "theme_color": "#0B0C0F",
   "lang": "uz",
-  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
 }

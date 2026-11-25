@@ -1,6 +1,6 @@
-# MediaHub
+# Topdim
 
-Rezyumesiz mediya ish va xodim e'lonlari. Bitta sahifa (`index.html`), ma'lumotlar Firebase Firestore'da.
+Rezyumesiz mediya ish va mutaxassis e'lonlari (UZ / RU / EN, qora va yorug' tema). Bitta sahifa (`index.html`), ma'lumotlar Firebase Firestore'da.
 
 - `index.html` — butun sayt
 - `firestore.rules` — Firestore xavfsizlik qoidalari (Firebase Console > Firestore > Rules ga qo'yiladi)
