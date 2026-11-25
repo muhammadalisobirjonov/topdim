@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MediaHub — rezyumesiz mediya ishlari</title>
+<meta name="description" content="Targetolog, SMM, montajyor, ssenarist: rezyumesiz ish va xodim toping. Telegram orqali to‘g‘ridan-to‘g‘ri yozing.">
+<meta name="theme-color" content="#2A5BFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232A5BFF'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='700' font-size='34' text-anchor='middle' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
+<style>
+[hidden]{display:none!important}
+html,body{margin:0}
+:root{color-scheme:light}
+/* Layout: one narrow app column (like a phone screen), sticky tabs on top, one big action button pinned at the bottom. */
+:root{
+  --bg:#F5F6FA; --card:#FFFFFF; --ink:#12141C; --muted:#687083; --line:#E3E6EE;
+  --accent:#2A5BFF; --accent-ink:#FFFFFF; --accent-soft:#E9EEFF; --danger:#C83A3A;
+  --scrim:rgba(18,20,28,.45);
+  --font:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1016; --card:#171A22; --ink:#EEF0F6; --muted:#9299AB; --line:#272B37;
+  --accent:#6188FF; --accent-ink:#0B0E18; --accent-soft:#1C2440; --danger:#FF7474;
+  --scrim:rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1016; --card:#171A22; --ink:#EEF0F6; --muted:#9299AB; --line:#272B37;
+  --accent:#6188FF; --accent-ink:#0B0E18; --accent-soft:#1C2440; --danger:#FF7474;
+  --scrim:rgba(0,0,0,.6); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.in{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg)}
+.brand{display:flex;align-items:center;justify-content:space-between;padding-block:14px 10px}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em}
+.logo b{color:var(--accent);font-weight:700}
+.badge{font-size:12px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:4px 10px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px}
+.tabs button{border:0;background:none;border-radius:10px;padding:10px 8px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tabs .n{font-size:12px;font-weight:500;opacity:.8;font-variant-numeric:tabular-nums}
+
+/* main */
+main.in{padding-block:12px 120px}
+.lead{margin:2px 0 12px;color:var(--muted);font-size:14px}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:2px max(16px,env(safe-area-inset-left,0px)) 12px}
+.chips::-webkit-scrollbar{display:none}
+.chips.wrap{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
+.chip{position:relative;flex:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-size:14px;font-weight:500;white-space:nowrap}
+.chip[aria-pressed="true"],.chip:has(input:checked){background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+
+.list{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.list:empty{display:none}
+.item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.body{min-width:0}
+.cat{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.t{font-weight:600;font-size:16px;margin-top:2px;overflow-wrap:anywhere}
+.d{color:var(--ink);opacity:.85;font-size:14px;margin-top:2px;overflow-wrap:anywhere}
+.m{color:var(--muted);font-size:13px;margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.mine{color:var(--accent);font-weight:600}
+.del{border:0;background:none;padding:0;color:var(--danger);font-size:13px;text-decoration:underline}
+.go{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:14px;text-decoration:none;border-radius:12px;padding:10px 14px;white-space:nowrap}
+.go:hover{background:var(--accent);color:var(--accent-ink)}
+.go svg{width:16px;height:16px}
+
+.empty{text-align:center;padding:36px 20px;background:var(--card);border:1px dashed var(--line);border-radius:var(--r);color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.empty button{margin-top:14px}
+
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;padding-top:12px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.primary{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:14px;padding:12px 18px}
+.big{width:100%;padding:15px 18px;font-size:16px}
+.primary:disabled{opacity:.5;cursor:default}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:var(--scrim);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:92vh;overflow:auto;background:var(--card);border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px)}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet .in{display:flex;flex-direction:column;gap:14px}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:10px auto 0}
+.sh-head{display:flex;justify-content:space-between;align-items:center}
+.sh-head h2{margin:0;font-size:20px;letter-spacing:-.01em}
+.x{border:0;background:var(--bg);width:36px;height:36px;border-radius:50%;font-size:20px;line-height:1}
+form{display:flex;flex-direction:column;gap:14px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0}
+.seg span{display:block;text-align:center;padding:12px;border:1px solid var(--line);border-radius:12px;font-weight:600}
+.seg input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.seg input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+legend,.f{font-size:13px;font-weight:500;color:var(--muted)}
+legend{padding:0;margin-bottom:8px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f input{width:100%;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:16px;color:var(--ink)}
+.f input:focus{outline:0;border-color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.err{margin:0;color:var(--danger);font-size:14px}
+.hint{margin:0;color:var(--muted);font-size:13px;text-align:center}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:500;font-size:14px;max-width:calc(100% - 32px);text-align:center}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firestore-compat.js"></script>
+<script>
+/* Firebase sozlamalari: Firebase Console > Project settings > Your apps > Web app > config.
+   null bo'lsa sayt demo rejimda ishlaydi (e'lonlar faqat shu brauzerda ko'rinadi). */
+window.FIREBASE_CONFIG = null;
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="in">
+    <div class="brand">
+      <span class="logo">Media<b>Hub</b></span>
+      <span class="badge">Rezyumesiz</span>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Bo‘limlar">
+      <button id="tab-v" role="tab" aria-selected="true" data-tab="v">Ishlar <span class="n" id="n-v"></span></button>
+      <button id="tab-s" role="tab" aria-selected="false" data-tab="s">Mutaxassislar <span class="n" id="n-s"></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="in">
+  <p class="lead" id="lead"></p>
+  <div class="chips" id="chips" aria-label="Yo‘nalish bo‘yicha saralash"></div>
+  <ul class="list" id="list"></ul>
+  <div class="empty" id="empty" hidden>
+    <strong id="empty-t"></strong>
+    <span id="empty-d"></span><br>
+    <button class="primary" id="empty-add" type="button">+ E‘lon berish</button>
+  </div>
+</main>
+
+<div class="bar"><div class="in"><button class="primary big" id="add" type="button">+ E‘lon berish</button></div></div>
+
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sh-t">
+  <div class="grab"></div>
+  <div class="in">
+    <div class="sh-head">
+      <h2 id="sh-t">E‘lon berish</h2>
+      <button class="x" id="close" type="button" aria-label="Yopish">×</button>
+    </div>
+    <form id="form" novalidate>
+      <div class="seg" role="radiogroup" aria-label="Kim siz?">
+        <label><input type="radio" name="kind" value="s" id="k-s" checked><span>Ish izlayman</span></label>
+        <label><input type="radio" name="kind" value="v" id="k-v"><span>Xodim izlayman</span></label>
+      </div>
+      <fieldset>
+        <legend>Yo‘nalish</legend>
+        <div class="chips wrap" id="f-cats"></div>
+      </fieldset>
+      <label class="f" id="w-name">Ismingiz<input id="f-name" maxlength="40" autocomplete="given-name" placeholder="Masalan: Aziz"></label>
+      <label class="f"><span id="l-text">Nima qila olasiz? (bir gap)</span><input id="f-text" maxlength="120" placeholder="Masalan: Reels montaj qilaman, 2 yil tajriba"></label>
+      <div class="two">
+        <label class="f">Shahar<input id="f-city" maxlength="30" value="Toshkent"></label>
+        <label class="f" id="w-pay">Maosh (ixtiyoriy)<input id="f-pay" maxlength="30" placeholder="Kelishiladi"></label>
+      </div>
+      <label class="f">Telegram<input id="f-tg" maxlength="45" placeholder="@username" autocapitalize="off" autocomplete="off" spellcheck="false"></label>
+      <p class="err" id="err" hidden></p>
+      <button class="primary big" type="submit" id="submit">Joylash</button>
+      <p class="hint">Rezyume kerak emas. Sizga Telegram orqali yozishadi.<br>Har kimda bittadan e‘lon: qayta yuborsangiz yangilanadi.</p>
+    </form>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+const CATS=[["target","Targetolog"],["smm","SMM menejer"],["montaj","Montajyor"],["ssenariy","Ssenarist"],["dizayn","Dizayner"],["video","Videograf"],["kopirayt","Kopirayter"],["boshqa","Boshqa"]];
+const CAT=Object.fromEntries(CATS);
+const COLL={v:"vacancies",s:"profiles"};
+const $=id=>document.getElementById(id);
+const data={v:[],s:[]};
+let tab="v",filter="",db=null,uid=null,loaded=false,localMode=false;
+
+const TG_ICON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 18.3 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.2 12.9 1.6 11.5c-1-.3-1-1 .2-1.5L20.2 3c.8-.3 1.6.2 1.2 1.3Z"/></svg>';
+
+function cleanTg(v){
+  let s=String(v||"").trim().replace(/^https?:\/\/(www\.)?(t|telegram)\.me\//i,"").replace(/^@/,"").replace(/\/.*$/,"");
+  return /^[A-Za-z0-9_]{4,32}$/.test(s)?s:"";
+}
+function str(v,n){return String(v==null?"":v).slice(0,n)}
+function norm(id,x){
+  if(!x||typeof x!=="object")return null;
+  const tg=cleanTg(x.tg); if(!tg)return null;
+  return {id,cat:CAT[x.cat]?x.cat:"boshqa",name:str(x.name,40),text:str(x.text,120),city:str(x.city,30),pay:str(x.pay,30),tg,ts:Number(x.ts)||0};
+}
+function ago(ts){
+  if(!ts)return "";
+  const d=Math.floor((Date.now()-ts)/864e5);
+  return d<=0?"bugun":d===1?"kecha":d<30?d+" kun oldin":Math.floor(d/30)+" oy oldin";
+}
+function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+
+/* ---------- render ---------- */
+function renderChips(){
+  const box=$("chips");box.textContent="";
+  [["","Hammasi"]].concat(CATS).forEach(([k,l])=>{
+    const b=el("button","chip",l);b.type="button";b.setAttribute("aria-pressed",String(filter===k));
+    b.onclick=()=>{filter=k;renderChips();renderList()};box.appendChild(b);
+  });
+}
+function renderList(){
+  $("n-v").textContent=data.v.length||"";$("n-s").textContent=data.s.length||"";
+  $("tab-v").setAttribute("aria-selected",String(tab==="v"));$("tab-s").setAttribute("aria-selected",String(tab==="s"));
+  $("lead").textContent=tab==="v"?"Ish beruvchilar e‘lonlari. Yoqqaniga Telegramda yozing.":"Ish izlayotganlar. Rezyume yo‘q, to‘g‘ridan-to‘g‘ri yozasiz.";
+  const list=$("list");list.textContent="";
+  const rows=data[tab].filter(x=>!filter||x.cat===filter);
+  rows.forEach(x=>{
+    const li=el("li","item"),body=el("div","body");
+    body.appendChild(el("div","cat",CAT[x.cat]));
+    if(tab==="v"){
+      body.appendChild(el("div","t",x.cat==="boshqa"?"Xodim kerak":CAT[x.cat]+" kerak"));
+    }else{
+      body.appendChild(el("div","t",x.name||"Mutaxassis"));
+    }
+    if(x.text)body.appendChild(el("div","d",x.text));
+    const m=el("div","m");
+    [x.city,tab==="v"?(x.pay||"Kelishiladi"):"",ago(x.ts)].filter(Boolean).forEach(s=>m.appendChild(el("span",null,s)));
+    if(uid&&x.id===uid||x.local){
+      m.appendChild(el("span","mine","Sizniki"));
+      const d=el("button","del","O‘chirish");d.type="button";d.onclick=()=>removeMine(tab);m.appendChild(d);
+    }
+    body.appendChild(m);
+    const a=el("a","go");a.href="https://t.me/"+x.tg;a.target="_blank";a.rel="noopener";
+    a.innerHTML=TG_ICON;a.appendChild(document.createTextNode("Yozish"));
+    a.setAttribute("aria-label","Telegramda yozish: @"+x.tg);
+    li.append(body,a);list.appendChild(li);
+  });
+  const empty=$("empty");
+  empty.hidden=rows.length>0;
+  if(!rows.length){
+    if(!loaded){$("empty-t").textContent="Yuklanmoqda…";$("empty-d").textContent="";$("empty-add").hidden=true;return}
+    $("empty-add").hidden=false;
+    $("empty-t").textContent=filter?"Bu yo‘nalishda hali e‘lon yo‘q":(tab==="v"?"Hali vakansiya yo‘q":"Hali mutaxassis yo‘q");
+    $("empty-d").textContent=tab==="v"?"Xodim kerakmi? Bir daqiqada e‘lon bering.":"Ish izlayapsizmi? Ism, yo‘nalish va Telegram yetarli.";
+  }
+}
+
+/* ---------- routing ---------- */
+function route(){tab=location.hash==="#mutaxassislar"?"s":"v";renderList()}
+$("tab-v").onclick=()=>{location.hash="ishlar"};
+$("tab-s").onclick=()=>{location.hash="mutaxassislar"};
+addEventListener("hashchange",route);
+
+/* ---------- form ---------- */
+const fc=$("f-cats");
+CATS.forEach(([k,l],i)=>{
+  const lab=el("label","chip");const r=document.createElement("input");
+  r.type="radio";r.name="cat";r.value=k;r.id="fc-"+k;if(i===0)r.checked=true;
+  lab.append(r,document.createTextNode(l));fc.appendChild(lab);
+});
+function kind(){return $("k-v").checked?"v":"s"}
+function syncKind(){
+  const v=kind()==="v";
+  $("w-name").hidden=v;$("w-pay").hidden=!v;
+  $("l-text").textContent=v?"Kim kerak, qisqacha (bir gap)":"Nima qila olasiz? (bir gap)";
+  $("f-text").placeholder=v?"Masalan: onlayn do‘kon uchun Instagram reklama":"Masalan: Reels montaj qilaman, 2 yil tajriba";
+}
+$("k-s").onchange=$("k-v").onchange=()=>{syncKind();prefill()};
+function prefill(){
+  const k=kind();const mine=data[k].find(x=>(uid&&x.id===uid)||x.local);
+  if(!mine)return;
+  const r=$("fc-"+mine.cat);if(r)r.checked=true;
+  if(mine.name)$("f-name").value=mine.name;
+  $("f-text").value=mine.text;$("f-city").value=mine.city;$("f-pay").value=mine.pay;$("f-tg").value="@"+mine.tg;
+}
+function openSheet(){
+  $("k-"+tab).checked=true;syncKind();prefill();$("err").hidden=true;
+  $("scrim").hidden=false;$("sheet").hidden=false;
+  setTimeout(()=>{const n=kind()==="s"&&!$("f-name").value?$("f-name"):$("f-text");n.focus()},60);
+}
+function closeSheet(){$("scrim").hidden=true;$("sheet").hidden=true;$("add").focus()}
+$("add").onclick=openSheet;$("empty-add").onclick=openSheet;
+$("close").onclick=closeSheet;$("scrim").onclick=closeSheet;
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("sheet").hidden)closeSheet()});
+
+function fail(msg,input){const e=$("err");e.textContent=msg;e.hidden=false;if(input)input.focus()}
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault();$("err").hidden=true;
+  const k=kind();
+  const rec={cat:(document.querySelector('input[name="cat"]:checked')||{}).value||"boshqa",
+    text:$("f-text").value.trim(),city:$("f-city").value.trim(),tg:cleanTg($("f-tg").value),ts:Date.now()};
+  if(k==="s"){rec.name=$("f-name").value.trim();if(!rec.name)return fail("Ismingizni yozing.",$("f-name"))}
+  else rec.pay=$("f-pay").value.trim();
+  if(!rec.text)return fail(k==="v"?"Kim kerakligini bir gapda yozing.":"Nima qila olishingizni bir gapda yozing.",$("f-text"));
+  if(!rec.city)return fail("Shaharni yozing.",$("f-city"));
+  if(!rec.tg)return fail("Telegram username noto‘g‘ri. Masalan: @aziz_montaj",$("f-tg"));
+  const btn=$("submit");btn.disabled=true;btn.textContent="Joylanmoqda…";
+  try{
+    if(db&&uid){await db.collection(COLL[k]).doc(uid).set(rec)}
+    else{
+      data[k]=data[k].filter(x=>!x.local);
+      data[k].unshift(Object.assign(norm("local-"+k,rec),{local:true}));
+    }
+    closeSheet();
+    if(location.hash!==(k==="v"?"#ishlar":"#mutaxassislar"))location.hash=k==="v"?"ishlar":"mutaxassislar";
+    filter="";renderChips();renderList();
+    toast(localMode?"Demo rejim: e‘lon faqat sizga ko‘rinadi":"E‘lon joylandi");
+  }catch(err){
+    fail(err&&(err.code==="permission-denied"||err.code==="not_granted")
+      ?"Sizda e‘lon joylash huquqi yo‘q. Sahifa egasidan ruxsat so‘rang."
+      :"Saqlab bo‘lmadi. Internetni tekshirib, qayta urinib ko‘ring.");
+  }finally{btn.disabled=false;btn.textContent="Joylash"}
+});
+
+async function removeMine(k){
+  try{
+    if(db&&uid)await db.collection(COLL[k]).doc(uid).delete();
+    else{data[k]=data[k].filter(x=>!x.local);renderList()}
+    toast("E‘lon o‘chirildi");
+  }catch(e){toast("O‘chirib bo‘lmadi, qayta urinib ko‘ring")}
+}
+
+/* ---------- data ---------- */
+function goLocal(){
+  if(db)return;localMode=true;loaded=true;renderList();
+}
+function subscribe(k){
+  db.collection(COLL[k]).onSnapshot(snap=>{
+    data[k]=(snap.docs||[]).map(d=>norm(d.id,d.data())).filter(Boolean).sort((a,b)=>b.ts-a.ts);
+    loaded=true;clearTimeout(timer);renderList();
+  },()=>{loaded=true;renderList()});
+}
+const timer=setTimeout(()=>{loaded=true;renderList()},10000);
+
+renderChips();route();
+(async()=>{
+  try{
+    const cfg=window.FIREBASE_CONFIG;
+    if(!cfg||!window.firebase){goLocal();return}
+    firebase.initializeApp(cfg);
+    const cred=await firebase.auth().signInAnonymously();
+    uid=cred.user.uid;
+    db=firebase.firestore();
+    subscribe("v");subscribe("s");
+  }catch(e){console.error(e);db=null;goLocal()}
+})();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Har kim o'qiy oladi; har kim faqat o'z e'lonini (hujjat id = o'z uid) yoza yoki o'chira oladi.
+    match /{coll}/{uid} {
+      allow read: if coll in ['vacancies', 'profiles'];
+      allow delete: if coll in ['vacancies', 'profiles']
+        && request.auth != null && request.auth.uid == uid;
+      allow create, update: if coll in ['vacancies', 'profiles']
+        && request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['cat', 'name', 'text', 'city', 'pay', 'tg', 'ts'])
+        && request.resource.data.cat is string && request.resource.data.cat.size() <= 20
+        && request.resource.data.text is string && request.resource.data.text.size() <= 120
+        && request.resource.data.city is string && request.resource.data.city.size() <= 30
+        && request.resource.data.tg is string && request.resource.data.tg.matches('^[A-Za-z0-9_]{4,32}$')
+        && (!('name' in request.resource.data) || (request.resource.data.name is string && request.resource.data.name.size() <= 40))
+        && (!('pay' in request.resource.data) || (request.resource.data.pay is string && request.resource.data.pay.size() <= 30))
+        && request.resource.data.ts is int;
+    }
+  }
+}
