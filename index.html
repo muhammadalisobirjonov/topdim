@@ -120,7 +120,11 @@ button{cursor:pointer}
 .go svg{width:16px;height:16px}
 .acts{display:flex;flex-direction:column;gap:6px}
 .acts .go{justify-content:center}
+button.go{border:0;font:inherit;cursor:pointer}
 .go.alt{background:none;border:1px solid var(--line);color:var(--ink)}
+.callopt{display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}
+.callopt svg{width:22px;height:22px}
+.callopt.soft{background:var(--accent-soft);color:var(--accent)}
 .go.alt:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .empty{text-align:center;padding:36px 20px;background:var(--card);border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
 .empty strong{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
@@ -251,6 +255,15 @@ window.FIREBASE_CONFIG = {
     </form>
   </div>
 </section>
+<section class="sheet" id="call" hidden role="dialog" aria-modal="true" aria-labelledby="call-t">
+  <div class="grab"></div>
+  <div class="in">
+    <div class="sh-head"><h2 id="call-t" data-i="callTitle"></h2><button class="x" id="call-x" type="button">×</button></div>
+    <a class="primary big callopt" id="call-v" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="3"/><path d="m15 10.5 6-3.5v10l-6-3.5"/></svg><span data-i="callVideo"></span></a>
+    <a class="primary big callopt soft" id="call-a" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span data-i="callAudio"></span></a>
+    <p class="hint" data-i="callHint"></p>
+  </div>
+</section>
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
@@ -263,7 +276,7 @@ uz:{q:"Nima qidiryapsiz?",qSub:"Rezyume shart emas. Tanlang va Telegramda yozing
  nV:n=>n+" ta vakansiya",nS:n=>n+" ta mutaxassis",steps:["Tanlang","Toping","Telegramda yozing"],
  back:"Orqaga",jobs:"Ishlar",specs:"Mutaxassislar",
  jobsLead:"Ish beruvchilar e’lonlari. Yoqqaniga Telegramda yozing.",specsLead:"Ish izlayotganlar. Rezyume yo‘q, to‘g‘ridan-to‘g‘ri yozasiz.",
- all:"Hammasi",write:"Yozish",video:"Video",videoMsg:"Salom! Topdim’dagi e’loningiz bo‘yicha Telegram’da video suhbatlashsak bo‘ladimi? Qaysi vaqt qulay?",ctaJobs:"+ O‘zim haqimda e’lon berish",ctaSpecs:"+ Vakansiya joylash",
+ all:"Hammasi",write:"Yozish",callBtn:"Suhbat",callTitle:"Suhbat taklif qilish",callVideo:"Video suhbat",callAudio:"Audio suhbat",callHint:"Telegramda taklif matni ochiladi. Ikkalangiz rozi bo‘lgach, qo‘ng‘iroqni Telegramning o‘zida boshlaysiz.",callMsgV:"Salom! Topdim’dagi e’loningiz bo‘yicha Telegram’da video suhbat taklif qilaman. Rozi bo‘lsangiz “Ha” deb yozing va qulay vaqtni ayting. Ikkimiz tasdiqlagach, video qo‘ng‘iroq qilamiz.",callMsgA:"Salom! Topdim’dagi e’loningiz bo‘yicha Telegram’da audio suhbat taklif qilaman. Rozi bo‘lsangiz “Ha” deb yozing va qulay vaqtni ayting. Ikkimiz tasdiqlagach, ovozli qo‘ng‘iroq qilamiz.",ctaJobs:"+ O‘zim haqimda e’lon berish",ctaSpecs:"+ Vakansiya joylash",
  emptyJobsT:"Hali vakansiya yo‘q",emptyJobsD:"O‘zingiz haqingizda e’lon qoldiring, ish beruvchilar sizni topadi.",
  emptySpecsT:"Hali mutaxassis yo‘q",emptySpecsD:"Vakansiya joylang, mutaxassislar sizga Telegramda yozadi.",
  emptyCat:"Bu yo‘nalishda hali e’lon yo‘q",loading:"Yuklanmoqda…",mine:"Sizniki",del:"O‘chirish",
@@ -286,7 +299,7 @@ ru:{q:"Что вы ищете?",qSub:"Резюме не нужно. Выбери
  nV:n=>"Вакансий: "+n,nS:n=>"Специалистов: "+n,steps:["Выберите","Найдите","Напишите в Telegram"],
  back:"Назад",jobs:"Работа",specs:"Специалисты",
  jobsLead:"Объявления работодателей. Понравилось — напишите в Telegram.",specsLead:"Ищут работу. Без резюме, пишите напрямую.",
- all:"Все",write:"Написать",video:"Видео",videoMsg:"Здравствуйте! Увидел(а) ваше объявление на Topdim. Можем созвониться по видео в Telegram? Когда вам удобно?",ctaJobs:"+ Объявление о себе",ctaSpecs:"+ Разместить вакансию",
+ all:"Все",write:"Написать",callBtn:"Разговор",callTitle:"Предложить разговор",callVideo:"Видеозвонок",callAudio:"Аудиозвонок",callHint:"В Telegram откроется текст предложения. Когда оба согласитесь, звоните прямо в Telegram.",callMsgV:"Здравствуйте! По вашему объявлению на Topdim предлагаю видеозвонок в Telegram. Если согласны, напишите «Да» и удобное время. Когда оба подтвердим, созвонимся по видео.",callMsgA:"Здравствуйте! По вашему объявлению на Topdim предлагаю аудиозвонок в Telegram. Если согласны, напишите «Да» и удобное время. Когда оба подтвердим, созвонимся.",ctaJobs:"+ Объявление о себе",ctaSpecs:"+ Разместить вакансию",
  emptyJobsT:"Пока нет вакансий",emptyJobsD:"Оставьте объявление о себе, и работодатели вас найдут.",
  emptySpecsT:"Пока нет специалистов",emptySpecsD:"Разместите вакансию, и специалисты напишут вам в Telegram.",
  emptyCat:"В этом направлении пока нет объявлений",loading:"Загрузка…",mine:"Ваше",del:"Удалить",
@@ -309,7 +322,7 @@ en:{q:"What are you looking for?",qSub:"No résumé needed. Pick one and message
  nV:n=>n+(n===1?" job":" jobs"),nS:n=>n+(n===1?" specialist":" specialists"),steps:["Pick","Find","Message on Telegram"],
  back:"Back",jobs:"Jobs",specs:"Specialists",
  jobsLead:"Posts from employers. Like one? Message them on Telegram.",specsLead:"People looking for work. No résumés, just message them.",
- all:"All",write:"Message",video:"Video call",videoMsg:"Hi! I saw your post on Topdim. Can we have a video call on Telegram? When works for you?",ctaJobs:"+ Post about me",ctaSpecs:"+ Post a job",
+ all:"All",write:"Message",callBtn:"Talk",callTitle:"Propose a call",callVideo:"Video call",callAudio:"Audio call",callHint:"Telegram opens with the proposal text. Once you both agree, start the call right in Telegram.",callMsgV:"Hi! About your post on Topdim: I’d like to propose a video call on Telegram. If you agree, reply “Yes” with a time that suits you. Once we both confirm, we’ll call.",callMsgA:"Hi! About your post on Topdim: I’d like to propose an audio call on Telegram. If you agree, reply “Yes” with a time that suits you. Once we both confirm, we’ll call.",ctaJobs:"+ Post about me",ctaSpecs:"+ Post a job",
  emptyJobsT:"No jobs yet",emptyJobsD:"Post about yourself so employers can find you.",
  emptySpecsT:"No specialists yet",emptySpecsD:"Post a job and specialists will message you on Telegram.",
  emptyCat:"No posts in this category yet",loading:"Loading…",mine:"Yours",del:"Delete",
@@ -350,7 +363,7 @@ function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 const isMine=x=>x.local||(uid&&x.id===uid);
 const TG_ICON='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 18.3 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.2 12.9 1.6 11.5c-1-.3-1-1 .2-1.5L20.2 3c.8-.3 1.6.2 1.2 1.3Z"/></svg>';
-const VID_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="3"/><path d="m15 10.5 6-3.5v10l-6-3.5"/></svg>';
+const CALL_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>';
 const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>';
 const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
 
@@ -422,9 +435,9 @@ function renderList(){
     a.innerHTML=TG_ICON;a.appendChild(document.createTextNode(L().write));a.setAttribute("aria-label",L().write+": @"+x.tg);
     acts.appendChild(a);
     if(!isMine(x)){
-      const v=el("a","go alt");v.href="https://t.me/"+x.tg+"?text="+encodeURIComponent(L().videoMsg);v.target="_blank";v.rel="noopener";
-      v.innerHTML=VID_ICON;v.appendChild(document.createTextNode(L().video));v.setAttribute("aria-label",L().video+": @"+x.tg);
-      acts.appendChild(v);
+      const c=el("button","go alt");c.type="button";
+      c.innerHTML=CALL_ICON;c.appendChild(document.createTextNode(L().callBtn));c.setAttribute("aria-label",L().callTitle+": @"+x.tg);
+      c.onclick=()=>openCall(x.tg);acts.appendChild(c);
     }
     li.append(body,acts);list.appendChild(li);
   });
@@ -482,8 +495,16 @@ function openSheet(){
   setTimeout(()=>{(kind()==="s"&&!$("f-name").value?$("f-name"):$("f-text")).focus()},60);
 }
 function closeSheet(){$("scrim").hidden=true;$("sheet").hidden=true;$("add").focus()}
-$("add").onclick=openSheet;$("close").onclick=closeSheet;$("scrim").onclick=closeSheet;
-addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("sheet").hidden)closeSheet()});
+function openCall(tg){
+  const base="https://t.me/"+tg+"?text=";
+  $("call-v").href=base+encodeURIComponent(L().callMsgV);$("call-a").href=base+encodeURIComponent(L().callMsgA);
+  $("scrim").hidden=false;$("call").hidden=false;
+}
+function closeCall(){$("call").hidden=true;if($("sheet").hidden)$("scrim").hidden=true}
+$("call-v").onclick=$("call-a").onclick=()=>setTimeout(closeCall,250);
+$("call-x").onclick=closeCall;
+$("add").onclick=openSheet;$("close").onclick=closeSheet;$("scrim").onclick=()=>{closeSheet();closeCall()};
+addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!$("sheet").hidden)closeSheet();if(!$("call").hidden)closeCall()});
 
 function fail(msg,input){const e=$("err");e.textContent=msg;e.hidden=false;if(input)input.focus()}
 $("form").addEventListener("submit",async e=>{
