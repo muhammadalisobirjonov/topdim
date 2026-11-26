@@ -7,7 +7,19 @@
 <meta name="description" content="Targetolog, SMM, montajyor, ssenarist: rezyumesiz ish va mutaxassis toping. Telegram orqali to‘g‘ridan-to‘g‘ri yozing.">
 <meta name="theme-color" content="#0B0C0F">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Topdim">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Topdim">
+<meta property="og:title" content="Topdim — ish va mutaxassislar">
+<meta property="og:description" content="Rezyumesiz ish va mutaxassis e’lonlari. Telegramda to‘g‘ridan-to‘g‘ri yozing.">
+<meta property="og:url" content="https://muhammadalisobirjonov.github.io/topdim/">
+<meta property="og:image" content="https://muhammadalisobirjonov.github.io/topdim/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Comfortaa:wght@700&display=swap">
@@ -173,6 +185,7 @@ window.FIREBASE_CONFIG = {
           <button type="button" data-lang="ru">RU</button>
           <button type="button" data-lang="en">EN</button>
         </div>
+        <button class="icon-btn" id="install" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19h14"/></svg></button>
         <button class="icon-btn" id="theme" type="button"></button>
       </div>
     </div>
@@ -260,7 +273,7 @@ uz:{q:"Nima qidiryapsiz?",qSub:"Rezyume shart emas. Tanlang va Telegramda yozing
  errCity:"Shaharni yozing.",errTg:"Telegram username noto‘g‘ri. Masalan: @aziz_montaj",
  errPerm:"E’lon joylab bo‘lmadi: ruxsat yo‘q. Sahifani yangilab, qayta urinib ko‘ring.",errSave:"Saqlab bo‘lmadi. Internetni tekshirib, qayta urinib ko‘ring.",
  ok:"E’lon joylandi",okDemo:"Demo rejim: e’lon faqat sizga ko‘rinadi",deleted:"E’lon o‘chirildi",delErr:"O‘chirib bo‘lmadi, qayta urinib ko‘ring",
- toDark:"Qorong‘i temaga o‘tish",toLight:"Yorug‘ temaga o‘tish",close:"Yopish",
+ install:"Ilovani o‘rnatish",toDark:"Qorong‘i temaga o‘tish",toLight:"Yorug‘ temaga o‘tish",close:"Yopish",
  need:c=>c+" kerak",needAny:"Xodim kerak",ago:d=>d<=0?"bugun":d===1?"kecha":d<30?d+" kun oldin":Math.floor(d/30)+" oy oldin",
  cats:{target:"Targetolog",smm:"SMM menejer",montaj:"Montajyor",ssenariy:"Ssenarist",dizayn:"Dizayner",video:"Videograf",kopirayt:"Kopirayter",boshqa:"Boshqa"}},
 ru:{q:"Что вы ищете?",qSub:"Резюме не нужно. Выберите и напишите в Telegram.",
@@ -283,7 +296,7 @@ ru:{q:"Что вы ищете?",qSub:"Резюме не нужно. Выбери
  errCity:"Укажите город.",errTg:"Неверный username Telegram. Например: @aziz_montaj",
  errPerm:"Не удалось опубликовать: нет доступа. Обновите страницу и попробуйте снова.",errSave:"Не удалось сохранить. Проверьте интернет и попробуйте снова.",
  ok:"Объявление опубликовано",okDemo:"Демо-режим: объявление видно только вам",deleted:"Объявление удалено",delErr:"Не удалось удалить, попробуйте снова",
- toDark:"Включить тёмную тему",toLight:"Включить светлую тему",close:"Закрыть",
+ install:"Установить приложение",toDark:"Включить тёмную тему",toLight:"Включить светлую тему",close:"Закрыть",
  need:c=>"Нужен "+c.toLowerCase(),needAny:"Нужен сотрудник",ago:d=>d<=0?"сегодня":d===1?"вчера":d<30?d+" дн. назад":Math.floor(d/30)+" мес. назад",
  cats:{target:"Таргетолог",smm:"SMM-менеджер",montaj:"Монтажёр",ssenariy:"Сценарист",dizayn:"Дизайнер",video:"Видеограф",kopirayt:"Копирайтер",boshqa:"Другое"}},
 en:{q:"What are you looking for?",qSub:"No résumé needed. Pick one and message on Telegram.",
@@ -306,7 +319,7 @@ en:{q:"What are you looking for?",qSub:"No résumé needed. Pick one and message
  errCity:"Enter a city.",errTg:"That Telegram username isn’t valid. Example: @aziz_montaj",
  errPerm:"Couldn’t post: access denied. Reload the page and try again.",errSave:"Couldn’t save. Check your connection and try again.",
  ok:"Posted",okDemo:"Demo mode: only you can see this post",deleted:"Post deleted",delErr:"Couldn’t delete, try again",
- toDark:"Switch to dark theme",toLight:"Switch to light theme",close:"Close",
+ install:"Install app",toDark:"Switch to dark theme",toLight:"Switch to light theme",close:"Close",
  need:c=>c+" needed",needAny:"Hiring",ago:d=>d<=0?"today":d===1?"yesterday":d<30?d+"d ago":Math.floor(d/30)+"mo ago",
  cats:{target:"Ads specialist",smm:"SMM manager",montaj:"Video editor",ssenariy:"Scriptwriter",dizayn:"Designer",video:"Videographer",kopirayt:"Copywriter",boshqa:"Other"}}
 };
@@ -361,7 +374,7 @@ function setLang(l){
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===l)));
   document.querySelectorAll("[data-i]").forEach(e=>{e.textContent=L()[e.dataset.i]});
   const st=$("steps");st.textContent="";L().steps.forEach((s,i)=>{const li=el("li");li.append(el("span",null,String(i+1)),document.createTextNode(s));st.appendChild(li)});
-  $("close").setAttribute("aria-label",L().close);
+  $("close").setAttribute("aria-label",L().close);$("install").setAttribute("aria-label",L().install);$("install").title=L().install;
   $("f-name").placeholder=L().fNamePh;$("f-pay").placeholder=L().pay;
   buildFormCats();syncKind();paintTheme();renderAll();
 }
@@ -492,10 +505,17 @@ async function removeMine(k){
   }catch(e){toast(L().delErr)}
 }
 
+/* ---------- install (PWA) ---------- */
+let deferredInstall=null;
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("install").hidden=false});
+$("install").onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;$("install").hidden=true};
+addEventListener("appinstalled",()=>{$("install").hidden=true});
+if("serviceWorker" in navigator)addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})});
+
 /* ---------- data ---------- */
 function goLocal(){db=null;localMode=true;loaded=true;clearTimeout(timer);renderAll()}
 function subscribe(k){
-  db.collection(COLL[k]).onSnapshot(snap=>{
+  db.collection(COLL[k]).orderBy("ts","desc").limit(100).onSnapshot(snap=>{
     data[k]=snap.docs.map(d=>norm(d.id,d.data())).filter(Boolean).sort((a,b)=>b.ts-a.ts);
     loaded=true;clearTimeout(timer);renderAll();
   },err=>{console.error(err);loaded=true;renderAll()});

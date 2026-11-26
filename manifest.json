@@ -1,11 +1,24 @@
 {
+  "id": "./",
   "name": "Topdim — ish va mutaxassislar",
   "short_name": "Topdim",
   "description": "Rezyumesiz mediya ish va mutaxassis e'lonlari",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0B0C0F",
   "theme_color": "#0B0C0F",
   "lang": "uz",
-  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+  "categories": ["business", "productivity"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ],
+  "shortcuts": [
+    {"name": "Ish izlayapman", "short_name": "Ishlar", "url": "./#ishlar", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Mutaxassis kerak", "short_name": "Mutaxassislar", "url": "./#mutaxassislar", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+  ]
 }

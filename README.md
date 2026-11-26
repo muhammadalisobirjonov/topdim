@@ -4,7 +4,7 @@ Rezyumesiz mediya ish va mutaxassis e'lonlari (UZ / RU / EN, qora va yorug' tema
 
 - `index.html` — butun sayt
 - `firestore.rules` — Firestore xavfsizlik qoidalari (Firebase Console > Firestore > Rules ga qo'yiladi)
-- `manifest.json`, `icon.svg` — telefonga "ilova" sifatida o'rnatish uchun
+- `manifest.json`, `sw.js`, `icon*.png`, `apple-touch-icon.png` — telefonga ilova (PWA) sifatida o'rnatish uchun
+- `og.png` — Telegram/ijtimoiy tarmoqlarda havola ko'rinishi (1200x630)
 
-`index.html` ichidagi `window.FIREBASE_CONFIG = null;` o'rniga Firebase web config qo'yiladi.
-Config bo'lmasa sayt demo rejimda ishlaydi.
+Firebase web config `index.html` ichidagi `window.FIREBASE_CONFIG` da (loyiha `topdim-5a516`). Config `null` bo'lsa sayt demo rejimda ishlaydi.
